@@ -1,0 +1,33 @@
+{
+  "name": "typescript-course-management",
+  "version": "1.0.0",
+  "description": "backend system for a Course Management System using TypeScript and Node.js. The system handles course data management and persist data in JSON files instead of a traditional database.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jest": "^29.5.13",
+    "fs": "^0.0.1-security",
+    "jest": "^29.7.0",
+    "joi": "^17.13.3",
+    "nodemon": "^3.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "winston": "^3.15.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.5",
+    "express": "^4.21.1",
+    "typescript": "^5.6.3"
+  }
+}
