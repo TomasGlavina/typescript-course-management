@@ -1,39 +1,49 @@
-import express, { Request, Response, NextFunction } from 'express';
-import {Course} from '../models/Course';
-import {validateCourse} from '../models/Course';
-import logger from '../utils/logger';
-import fs, { read } from 'fs';
-import {readCourses, writeCourses} from './utils/courseServices';
+import express from 'express';
+import {
+    getAllCourses,
+    getCourseById,
+    createCourse,
+    updateCourse,
+    deleteCourse
+} from '../controllers/courseController';
+import { requestLogger, validateRequest, errorHandler } from '../middleware/middleware';
+import { body } from 'express-validator';
+import { asyncHandler } from '../utils/asyncHandler'; // Import asyncHandler
+
 const router = express.Router();
 
-//Fetch all courses
-router.get('/courses', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const courses = await readCourses();
-        res.status(200).json(courses);
-    } catch (err) {
-        logger.error(`Error fetching courses: ${err.message}`);
-        next(err);
-    }
-});
+// Use request logger middleware for all routes
+router.use(requestLogger);
 
-//Fetch a single course by id
-router.get('/courses/:id', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const id = Number(req.params.id);
-        const courses = await readCourses();
-        const course = courses.find((course: Course) => course.id === id);
+// Define routes with asyncHandler
+router.get('/', asyncHandler(getAllCourses));
+router.get('/:id', asyncHandler(getCourseById));
 
-        if (!course) {
-            res.status(404).json({message: 'Course not found'});
-        }
+router.post(
+    '/',
+    [
+        body('title').notEmpty().withMessage('Title is required'),
+        body('description').notEmpty().withMessage('Description is required'),
+        body('modules').isArray({ min: 1 }).withMessage('Modules must be a non-empty array'),
+        validateRequest
+    ],
+    asyncHandler(createCourse)
+);
 
-        res.status(200).json(course);
-    
-    } catch (err) {
-        logger.error(`Error fetching course: ${err.message}`);
-        next(err);
-    }
-});
+router.put(
+    '/:id',
+    [
+        body('title').optional().notEmpty().withMessage('Title cannot be empty'),
+        body('description').optional().notEmpty().withMessage('Description cannot be empty'),
+        body('modules').optional().isArray().withMessage('Modules must be an array'),
+        validateRequest
+    ],
+    asyncHandler(updateCourse)
+);
 
-// Create a new course
+router.delete('/:id', asyncHandler(deleteCourse));
+
+// Error handling middleware
+router.use(errorHandler);
+
+export default router;

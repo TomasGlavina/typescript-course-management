@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "title": "Understanding HTML Structure",
+    "description": "Learn about HTML tags and document structure",
+    "topics": [
+      "HTML tags",
+      "Document structure",
+      "Semantic HTML"
+    ],
+    "content": [
+      {
+        "type": "text",
+        "data": "HTML (HyperText Markup Language) is the standard markup language for documents designed to be displayed in a web browser."
+      },
+      {
+        "type": "video",
+        "data": "https://example.com/intro-to-html-video"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "CSS Selectors and Properties",
+    "description": "Master CSS selectors and common properties",
+    "topics": [
+      "Selectors",
+      "Box model",
+      "Colors and typography"
+    ],
+    "content": [
+      {
+        "type": "text",
+        "data": "CSS (Cascading Style Sheets) is used to style and layout web pages."
+      },
+      {
+        "type": "video",
+        "data": "https://example.com/css-selectors-video"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Understanding Closures",
+    "description": "Learn what closures are and how to use them in JavaScript.",
+    "topics": [
+      "Closures",
+      "Scope",
+      "Lexical environment"
+    ],
+    "content": [
+      {
+        "type": "text",
+        "data": "A closure is the combination of a function and the lexical environment within which that function was declared."
+      },
+      {
+        "type": "video",
+        "data": "https://example.com/js-closures-video"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Promises and Async/Await",
+    "description": "Learn how to work with promises and the async/await syntax for handling asynchronous operations.",
+    "topics": [
+      "Promises",
+      "Async/Await",
+      "Error handling"
+    ],
+    "content": [
+      {
+        "type": "text",
+        "data": "Promises in JavaScript are used to handle asynchronous operations."
+      },
+      {
+        "type": "video",
+        "data": "https://example.com/js-async-video"
+      }
+    ]
+  },
+  {
+    "title": "Introduction to Generics",
+    "description": "Learn how to use generics in TypeScript.",
+    "topics": [
+      "What are Generics?",
+      "Type Parameters",
+      "Constraints"
+    ],
+    "content": [
+      {
+        "type": "text",
+        "data": "Generics are a powerful way to create reusable code."
+      }
+    ],
+    "id": 5
+  }
+]

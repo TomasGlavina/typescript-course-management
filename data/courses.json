@@ -1,0 +1,66 @@
+[
+  {
+    "id": 3,
+    "title": "Introduction to TypeScript",
+    "description": "Learn TypeScript, a typed superset of JavaScript that compiles to plain JavaScript.",
+    "modules": []
+  },
+  {
+    "title": "New TypeScript Course",
+    "description": "Learn advanced TypeScript concepts.",
+    "modules": [
+      {
+        "title": "TypeScript Generics",
+        "lessons": [
+          {
+            "title": "Introduction to Generics",
+            "description": "Learn how to use generics in TypeScript.",
+            "topics": [
+              "What are Generics?",
+              "Type Parameters",
+              "Constraints"
+            ],
+            "content": [
+              {
+                "type": "text",
+                "data": "Generics are a powerful way to create reusable code."
+              }
+            ],
+            "id": 5
+          }
+        ],
+        "id": 5
+      }
+    ],
+    "id": 4
+  },
+  {
+    "title": "New TypeScript Course",
+    "description": "Learn advanced TypeScript concepts.",
+    "modules": [
+      {
+        "title": "TypeScript Generics",
+        "lessons": [
+          {
+            "title": "Introduction to Generics",
+            "description": "Learn how to use generics in TypeScript.",
+            "topics": [
+              "What are Generics?",
+              "Type Parameters",
+              "Constraints"
+            ],
+            "content": [
+              {
+                "type": "text",
+                "data": "Generics are a powerful way to create reusable code."
+              }
+            ],
+            "id": 5
+          }
+        ],
+        "id": 5
+      }
+    ],
+    "id": 5
+  }
+]

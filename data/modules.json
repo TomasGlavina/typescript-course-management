@@ -1,0 +1,40 @@
+[
+  {
+    "id": 1,
+    "title": "HTML Basics",
+    "lessonIds": [
+      1
+    ]
+  },
+  {
+    "id": 2,
+    "title": "CSS Fundamentals",
+    "lessonIds": [
+      2
+    ]
+  },
+  {
+    "id": 3,
+    "title": "JavaScript Closures",
+    "lessonIds": [
+      3
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Asynchronous JavaScript",
+    "lessonIds": [
+      4
+    ]
+  },
+  {
+    "id": 5,
+    "title": "TypeScript Generics",
+    "lessons": [
+      {
+        "id": 5,
+        "title": "Introduction to Generics"
+      }
+    ]
+  }
+]

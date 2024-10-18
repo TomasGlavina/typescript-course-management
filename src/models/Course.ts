@@ -1,3 +1,6 @@
+import { promises as fs } from 'fs'; // Use fs/promises for asynchronous operations
+import path from 'path';
+
 interface Content {
     type: string;
     data: string;
@@ -11,128 +14,78 @@ interface Lesson {
 }
 
 interface Module {
+    id: number;
     title: string;
-    lessons: Lesson[];
+    lessonsId: number[];
 }
 
+// Assuming Course is defined as follows
 interface Course {
     id: number;
     title: string;
     description: string;
-    modules: Module[];
+    modules: Module[]; // Array of module objects with id, title, and lessons
 }
 
 // Helper function to validate non-empty arrays
 const isValidArray = <T>(arr: T[]): boolean => Array.isArray(arr) && arr.length > 0;
 
-
-
-//Helper function to validate the course structure
+// Helper function to validate the course structure
 const validateContent = (content: Content[]): boolean => {
     return isValidArray(content) && content.every((c: Content) => c.type && c.data);
-}
+};
 
 const validateLessons = (lessons: Lesson[]): boolean => {
-    return isValidArray(lessons) && lessons.every( (lesson: Lesson) =>  
-        !!lesson.title && 
-        !!lesson.description && 
+    return isValidArray(lessons) && lessons.every((lesson: Lesson) =>
+        !!lesson.title &&
+        !!lesson.description &&
         isValidArray(lesson.topics) &&
         validateContent(lesson.content)
     );
-}
+};
 
 // Helper function to validate the module structure
-const validateModules = (modules: Module[]): boolean => {
+const validateModules = async (modules: Module[]): Promise<boolean> => {
+    const lessons = await readDataFromFile(lessonsFilePath);
     return isValidArray(modules) &&
-        modules.every( module => 
-            !!module.title && 
-            validateLessons(module.lessons)
+        modules.every(module =>
+            !!module.title &&
+            validateLessons(module.lessonsId.map(id => lessons.find(lesson => lesson.id === id)))
         );
-}
+};
 
-// Main function to validate course structure before saving
-export const validateCourse = (course: Course): boolean => {
-    return !!course.title && 
-           !!course.description && 
-           validateModules(course.modules);
-}
+export const validateCourse = async (course: Course): Promise<boolean> => {
+    return !!course.title &&
+        !!course.description &&
+        await validateModules(course.modules);
+};
 
+// File paths
+const coursesFilePath = path.join(__dirname, '../../data/courses.json');
+const modulesFilePath = path.join(__dirname, '../../data/modules.json');
+const lessonsFilePath = path.join(__dirname, '../../data/lessons.json');
 
-const courses: Course[] = [
-    {
-        id: 1,
-        title: "Introduction to Web Development",
-        description: "Learn the fundamentals of web development, covering HTML, CSS, and JavaScript.",
-        modules: [
-            {
-                title: "HTML Basics",
-                lessons: [
-                    {
-                        title: "Understanding HTML Structure",
-                        description: "Learn about HTML tags and document structure",
-                        topics: [
-                            "HTML tags",
-                            "Document structure",
-                            "Semantic HTML"
-                        ],
-                        content: [
-                            {
-                                type: "text",
-                                data: "HTML (HyperText Markup Language) is the standard markup language for documents designed to be displayed in a web browser."
-                            },
-                            {
-                                type: "video",
-                                data: "https://example.com/intro-to-html-video"
-                            }
-                        ]
-                    },
-                    {
-                        title: "Working with Forms",
-                        description: "Create and style HTML forms",
-                        topics: [
-                            "Form elements",
-                            "Input types",
-                            "Form validation"
-                        ],
-                        content: [
-                            {
-                                type: "text",
-                                data: "HTML forms are used to collect user input. Learn how to create effective and accessible forms."
-                            },
-                            {
-                                type: "audio",
-                                data: "https://example.com/html-forms-audio"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                title: "CSS Fundamentals",
-                lessons: [
-                    {
-                        title: "CSS Selectors and Properties",
-                        description: "Master CSS selectors and common properties",
-                        topics: [
-                            "Selectors",
-                            "Box model",
-                            "Colors and typography"
-                        ],
-                        content: [
-                            {
-                                type: "text",
-                                data: "CSS (Cascading Style Sheets) is used to style and layout web pages."
-                            },
-                            {
-                                type: "video",
-                                data: "https://example.com/css-selectors-video"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+// Read data from JSON file asynchronously
+const readDataFromFile = async (filePath: string): Promise<any[]> => {
+    try {
+        const data = await fs.readFile(filePath, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        if (error instanceof Error && (error as NodeJS.ErrnoException).code === 'ENOENT') {
+            // File does not exist, return an empty array
+            return [];
+        }
+        throw error; // Re-throw other errors
     }
-];
+};
 
-export { Course, Module, Lesson, Content, courses };
+// Write data to JSON file asynchronously
+const writeDataToFile = async (filePath: string, data: any[]): Promise<void> => {
+    try {
+        await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+    } catch (error) {
+        throw new Error(`Failed to write to file: ${filePath}. Error: ${(error as Error).message}`);
+    }
+};
+
+export { Course, Module, Lesson, Content, readDataFromFile, writeDataToFile, coursesFilePath, modulesFilePath, lessonsFilePath };

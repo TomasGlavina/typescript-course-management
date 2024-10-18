@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
-
+import { validationResult } from 'express-validator';
 
 // Error handling middleware
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction): void => {
@@ -23,19 +23,17 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction): 
     logger.info(`${req.method} ${req.url} - ${req.ip} - ${new Date()}`);
     next();
 }
-
-//Input validation middleware
-import {Schema} from 'joi';
-
-export const validateRequest = (schema: Schema) => {
-    return(req: Request, res: Response, next: NextFunction) => {
-        const { error } = schema.validate(req.body);
-        if(error) {
-            logger.warn(`${req.method} ${req.url} - Validation error: ${error.message}`);
-            return res.status(400).json({ message: 'Validation error', error: error.details });
-        }
+// Middleware for validating request data using express-validator
+export const validateRequest = (req: Request, res: Response, next: NextFunction): void => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        // Return a response if there are validation errors
+        logger.error(`Validation failed: ${JSON.stringify(errors.array())}`);
+        res.status(400).json({ errors: errors.array() });
+    } else {
+        // Call next() to continue if there are no validation errors
         next();
     }
-}
+};
 
 export default errorHandler;

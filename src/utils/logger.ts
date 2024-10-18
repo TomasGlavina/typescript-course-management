@@ -1,8 +1,15 @@
 import winston from 'winston';
+import fs from 'fs';
+import path from 'path';
 
-const logDir = '../../logs';
+const logDir = path.join(__dirname, '../../logs'); // Ensure the log directory is set correctly
 
-//Create a logger instance with different log levels
+// Create the logs directory if it does not exist
+if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir);
+}
+
+// Create a logger instance with different log levels
 export const logger = winston.createLogger({
     level: 'info',
     format: winston.format.combine(
@@ -19,8 +26,7 @@ export const logger = winston.createLogger({
                 winston.format.colorize(),
                 winston.format.simple(),
             )
-        }
-        ),
+        }),
         new winston.transports.File({ filename: `${logDir}/error.log`, level: 'error' }),
         new winston.transports.File({ filename: `${logDir}/combined.log` }),
     ],
